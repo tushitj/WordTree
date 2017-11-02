@@ -1,9 +1,5 @@
 package wordTree.myTree;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * Node class that is a structure to save in the tree that implements Observer, Subject, Cloneable and Comparable Interface.
  * Class has two pointers to left and right nodes.
@@ -19,12 +15,38 @@ public class Node implements Comparable<Node> {
 	private int count;
 	private int wordLength;
 	private String word;
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getWord() {
+		return word;
+	}
+
+	public void setWord(String word) {
+		this.word = word;
+	}
+
+	public int getWordLength() {
+		return wordLength;
+	}
+
+	
 	
 	
 	public Node(String wordIn) {
-		count=0;
-		setLeft(setRight(null));
-		addWord(word);
+		count=1;
+		setLeft(null);
+		setRight(null);
+		if(wordIn != null){
+			setWord(wordIn);
+			wordLength = wordIn.length();
+		}
+
 	}
 
 	/**
@@ -32,11 +54,8 @@ public class Node implements Comparable<Node> {
 	 * @param course: the courseName
 	 */
 	public void addWord(String wordIn) {
-		if(wordIn != null){
-			word = wordIn;
-			wordLength = word.length();
-			++count;
-		}
+			count++;
+		
 	}
 
 	/**
@@ -45,7 +64,7 @@ public class Node implements Comparable<Node> {
 	 */
 	public void removeWord(String wordIn) {
 		if(null != wordIn)
-			--count;
+			count--;
 
 	}
 
@@ -106,6 +125,10 @@ public class Node implements Comparable<Node> {
 	public Node setRight(Node right) {
 		this.right = right;
 		return right;
+	}
+	@Override
+	public String toString(){
+		return "Word is: "+getWord() + " Count is: " + count + " Length is: " +wordLength;
 	}
 
 }

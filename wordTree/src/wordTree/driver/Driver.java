@@ -1,23 +1,24 @@
 package wordTree.driver;
 
+import wordTree.myTree.Tree;
+import wordTree.util.FileProcessor;
+
 public class Driver {
 	public static void main(String[] args) {
-		if(args.length !=7){
-			System.err.println("Error. Incorrect Arguments" + args.length);
-			System.exit(1);
-		}
-		String inputFile = args[0];
-		String outputFile = args[1];
-		try{
-			int NUM_THREADS = Integer.parseInt(args[2]);
-			
-		}catch(NumberFormatException e){
-			System.err.println("Number Expected");
-			System.exit(1);
-			
-			
+		
+		FileProcessor fp = new FileProcessor("input.txt");
+		Tree t = new Tree();
+		String str;
+		while((str = fp.readLine())!=null){
+			String[] words = str.split("\\s+");
+			for(String wordIn : words){
+				System.out.println(wordIn);
+				t.insertWord(wordIn);
+			}
+				//t.insertWord(wordIn);
 		}
 		
+		t.print();
 		
 	}
 
