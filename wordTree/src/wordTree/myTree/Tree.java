@@ -6,40 +6,7 @@ public class Tree {
 	public Tree(){
 		root = null;
 	}
-//	public String insertCourse(int id, String course){
-//		Node node;
-//		if(course != null && id>999 && id<10000){
-//			if((node = searchNode(id)) !=null){
-//				node.addCourse(course);
-//				node.notifyAllObservers(Operation.INSERT, course);
-//			}else{
-//				node = new Node(id,course);
-//				insertNodeIntoTree(node);
-//				try{
-//					ObserverI nodeBackup1 = node.clone();
-//					backupTree1.insertNodeIntoTree((Node)nodeBackup1);
-//					node.subscribeObserver(nodeBackup1);
-//				}catch(Exception e){
-//					System.err.println("Error occured while cloning backupNode1");
-//				}
-//				try{
-//					ObserverI nodeBackup2 = node.clone();
-//					backupTree2.insertNodeIntoTree((Node)nodeBackup2);
-//					node.subscribeObserver(nodeBackup2);
-//				}catch(Exception e){
-//					System.err.println("Error occured while cloning backupNode2");
-//				}
-//				
-//			}
-//		}
-//		return "Course added successfuly";
-//		
-//	}
-
-	
-	
-	
-	public void insertWord(String wordIn){
+	synchronized public void insertWord(String wordIn){
 		Node node;
 		if(wordIn !=null){
 			if((node = searchNode(wordIn)) != null){
@@ -53,11 +20,11 @@ public class Tree {
 	}
 	
 	
-	private void insertNodeIntoTree(Node node) {
+	synchronized private void insertNodeIntoTree(Node node) {
 		root = insert(root,node);
 	
 }
-	private Node insert(Node curr, Node node) {
+	synchronized private Node insert(Node curr, Node node) {
 		if(curr==null){
 			curr = node;
 			return curr;
@@ -73,12 +40,12 @@ public class Tree {
 		return curr;
 	}
 
-	private Node searchNode(String m) {
+	synchronized private Node searchNode(String m) {
 		Node node = searchRec(root,m);
 		return node;
 	}
 	
-	private Node searchRec(Node node, String m) {
+	synchronized private Node searchRec(Node node, String m) {
 		Node found = null;
 		if(node == null || node.getWord().compareTo(m) == 0){
 			return node;
@@ -103,5 +70,15 @@ public class Tree {
 			System.out.println(node.toString());
 			printInOrder(node.getRight());
 		}
+	}
+	synchronized public String removeWordCountFromNode(String word){
+		Node node = searchNode(word);
+		if(node == null){
+			return null;
+		}
+		else{
+			node.removeWord(word);
+		}
+		return "Removed";
 	}
 }

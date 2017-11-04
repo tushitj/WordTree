@@ -52,8 +52,9 @@ public class FileProcessor {
         String line = null;
         try{
             line = br.readLine();
-            if(line == null || (line.trim().length()<1)){
-                return null;
+            //if(line == null || (line.trim().length()<1)){
+            if(line == null){
+            		return null;
             }
             else{
                 return line;
@@ -63,15 +64,15 @@ public class FileProcessor {
             e.printStackTrace();
         }
         finally{
-            try {
-                if(line == null && br!=null)
-                    br.close();
-                if(line == null && fin!=null)
-                    fin.close();
-            }catch (IOException e) {
-               // MyLogger.writeMessage("Error in FileProcessor class. Could not close buffers. Some object may be still using them." , MyLogger.DebugLevel.IN_RESULTS);
-                e.printStackTrace();
-            }
+//            try {
+//                if(line == null && br!=null)
+//                    br.close();
+//                if(line == null && fin!=null)
+//                    fin.close();
+//            }catch (IOException e) {
+//               // MyLogger.writeMessage("Error in FileProcessor class. Could not close buffers. Some object may be still using them." , MyLogger.DebugLevel.IN_RESULTS);
+//                e.printStackTrace();
+//            }
         }
         return line;
     }

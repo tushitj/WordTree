@@ -53,7 +53,7 @@ public class Node implements Comparable<Node> {
 	 * A function that adds the course to the node for a particular buId.
 	 * @param course: the courseName
 	 */
-	public void addWord(String wordIn) {
+	synchronized public void addWord(String wordIn) {
 			count++;
 		
 	}
@@ -62,9 +62,14 @@ public class Node implements Comparable<Node> {
 	 * Removes the course for a particular node
 	 * @param course: courseName to be removed if it exists.
 	 */
-	public void removeWord(String wordIn) {
-		if(null != wordIn)
-			count--;
+	synchronized public void removeWord(String wordIn) {
+		if(null != wordIn) {
+			//if(count>0){
+				count--;
+			//}
+			
+		}
+			
 
 	}
 
@@ -128,7 +133,7 @@ public class Node implements Comparable<Node> {
 	}
 	@Override
 	public String toString(){
-		return "Word is: "+getWord() + " Count is: " + count + " Length is: " +wordLength;
+		return "Word is: "+getWord() + " Count is: " +count + " Length is: " +wordLength;
 	}
 
 }
