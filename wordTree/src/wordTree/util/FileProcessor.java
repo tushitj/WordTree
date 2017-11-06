@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * FileProcessor Class that is used to process the input and output files.
@@ -15,9 +19,12 @@ public class FileProcessor {
     private String fileName;
     BufferedReader br;
     FileReader fin;
+    String[] arr;
+    private List<String> list;
+    Iterator<String> i;
 
     /**
-     * Constructor that initalizes file by filename
+     * Constructor that initializes file by filename
      * @param fileNameIn : input filename from Driver.Main
      */
     public FileProcessor(String fileNameIn) {
@@ -46,14 +53,28 @@ public class FileProcessor {
 
     /**
      * Function reads each line from the file and returns it to the calling function
+     * @return 
      * @return string value from the file
      */
-    public String readLine(){
+    public void setArr(String[] arrIn) {
+    	list = Collections.synchronizedList(Arrays.asList(arrIn));
+    	i = list.iterator();
+    	
+    }
+   public synchronized String getStringToDelete() {
+	   synchronized(list) {
+		   if(i.hasNext()) {
+			   return (String)i.next();
+		   }
+		   return null;
+	   }
+   }
+   synchronized public String readLine(){
         String line = null;
         try{
             line = br.readLine();
             //if(line == null || (line.trim().length()<1)){
-            if(line == null){
+            if(line == null || line.trim().length()<1){
             		return null;
             }
             else{

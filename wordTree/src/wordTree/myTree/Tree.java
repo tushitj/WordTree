@@ -1,84 +1,98 @@
 package wordTree.myTree;
 
+
 public class Tree {
-	private Node root;
-	
-	public Tree(){
+	private volatile Node root;
+
+	public Node getRoot() {
+		return root;
+	}
+
+	public void setRoot(Node root) {
+		this.root = root;
+	}
+
+	public Tree() {
 		root = null;
 	}
-	synchronized public void insertWord(String wordIn){
+
+	synchronized public void insertWord(String wordIn) {
 		Node node;
-		if(wordIn !=null){
-			if((node = searchNode(wordIn)) != null){
+		if (wordIn != null) {
+			if ((node = searchNode(wordIn)) != null) {
 				node.addWord(wordIn);
-			}
-			else{
+			} else {
 				node = new Node(wordIn);
-				insertNodeIntoTree(node);				
+				insertNodeIntoTree(node);
 			}
-		}	
+		}
 	}
-	
-	
-	synchronized private void insertNodeIntoTree(Node node) {
-		root = insert(root,node);
-	
-}
-	synchronized private Node insert(Node curr, Node node) {
-		if(curr==null){
+
+ private void insertNodeIntoTree(Node node) {
+		root = insert(root, node);
+
+	}
+
+ private Node insert(Node curr, Node node) {
+		if (curr == null) {
 			curr = node;
 			return curr;
 		}
-		//if(curr > node ) go left
-		else if(curr.compareTo(node) > 0){
-			curr.setLeft(insert(curr.getLeft(),node));
+		// if(curr > node ) go left
+		else if (curr.compareTo(node) > 0) {
+			curr.setLeft(insert(curr.getLeft(), node));
 		}
-		//if(curr < node ) go right
-		else if(curr.compareTo(node) < 0){
-			curr.setRight(insert(curr.getRight(),node));
+		// if(curr < node ) go right
+		else if (curr.compareTo(node) < 0) {
+			curr.setRight(insert(curr.getRight(), node));
 		}
 		return curr;
 	}
 
 	synchronized private Node searchNode(String m) {
-		Node node = searchRec(root,m);
+		Node node = searchRec(root, m);
 		return node;
 	}
-	
+
 	synchronized private Node searchRec(Node node, String m) {
 		Node found = null;
-		if(node == null || node.getWord().compareTo(m) == 0){
+		if (node == null || node.getWord().compareTo(m) == 0) {
 			return node;
-		}
-		else if(node.getWord().compareTo(m) > 0){
+		} else if (node.getWord().compareTo(m) > 0) {
 			found = searchRec(node.getLeft(), m);
-		}
-		else if(node.getWord().compareTo(m) < 0){
+		} else if (node.getWord().compareTo(m) < 0) {
 			found = searchRec(node.getRight(), m);
 		}
 		return found;
 	}
-	//pass results object here. and also in printInOrder.
-	public void print(){
-		printInOrder(root);
-	}
 
-	//pass Results Object here to store the output in it.
-	private void printInOrder(Node node){
-		if(node!=null){
-			printInOrder(node.getLeft());
-			System.out.println(node.toString());
-			printInOrder(node.getRight());
-		}
-	}
-	synchronized public String removeWordCountFromNode(String word){
+	// pass results object here. and also in printInOrder.
+//	public void print() {
+//		printInOrder(root);
+//	}
+
+	// pass Results Object here to store the output in it.
+//	private void printInOrder(Node node) {
+//		if (node != null) {
+//			printInOrder(node.getLeft());
+//			System.out.println(node.toString());
+//			printInOrder(node.getRight());
+//		}
+//	}
+
+	synchronized public String removeWordCountFromNode(String word) {
 		Node node = searchNode(word);
-		if(node == null){
+		if (node == null) {
 			return null;
-		}
-		else{
+		} else {
 			node.removeWord(word);
 		}
 		return "Removed";
 	}
+	  
+
+	public int nodes() {
+	    return (root == null) ? 0 : root.countNode();
+	}
+	
 }

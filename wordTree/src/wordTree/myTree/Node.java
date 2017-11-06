@@ -1,20 +1,22 @@
 package wordTree.myTree;
 
 /**
- * Node class that is a structure to save in the tree that implements Observer, Subject, Cloneable and Comparable Interface.
- * Class has two pointers to left and right nodes.
- * The node saves buId and a HashSet of courses.
- * I have used hashset for courses because it is fast and efficient to find
- * a course of a buId and also duplicate courses are handled by hashset.
+ * Node class that is a structure to save in the tree that implements Observer,
+ * Subject, Cloneable and Comparable Interface. Class has two pointers to left
+ * and right nodes. The node saves buId and a HashSet of courses. I have used
+ * hashset for courses because it is fast and efficient to find a course of a
+ * buId and also duplicate courses are handled by hashset.
+ * 
  * @author tushitjain
  *
  */
 public class Node implements Comparable<Node> {
-	private Node left;
-	private Node right;
-	private int count;
-	private int wordLength;
-	private String word;
+	private volatile Node left;
+	private volatile Node right;
+	private volatile int count;
+	private volatile int wordLength;
+	private volatile String word;
+
 	public int getCount() {
 		return count;
 	}
@@ -35,14 +37,11 @@ public class Node implements Comparable<Node> {
 		return wordLength;
 	}
 
-	
-	
-	
 	public Node(String wordIn) {
-		count=1;
+		count = 1;
 		setLeft(null);
 		setRight(null);
-		if(wordIn != null){
+		if (wordIn != null) {
 			setWord(wordIn);
 			wordLength = wordIn.length();
 		}
@@ -51,26 +50,26 @@ public class Node implements Comparable<Node> {
 
 	/**
 	 * A function that adds the course to the node for a particular buId.
-	 * @param course: the courseName
+	 * 
+	 * @param course:
+	 *            the courseName
 	 */
-	synchronized public void addWord(String wordIn) {
-			count++;
-		
+	public void addWord(String wordIn) {
+		count++;
 	}
 
 	/**
 	 * Removes the course for a particular node
-	 * @param course: courseName to be removed if it exists.
+	 * 
+	 * @param course:
+	 *            courseName to be removed if it exists.
 	 */
-	synchronized public void removeWord(String wordIn) {
-		if(null != wordIn) {
+	public void removeWord(String wordIn) {
+		if (null != wordIn) {
 			//if(count>0){
-				count--;
-			//}
-			
+			count--;
+			 //}
 		}
-			
-
 	}
 
 	/**
@@ -78,28 +77,30 @@ public class Node implements Comparable<Node> {
 	 */
 	@Override
 	public int hashCode() {
-		return 31*wordLength;
+		return 31 * wordLength;
 	}
-	
+
 	/**
 	 * Method overridden from Comparable interface to compare two nodes.
 	 */
-//	@Override
-//	public int compareTo(Node o) {
-//		if (getId() < o.getId()) {
-//			return -1;
-//		} else if (getId() > o.getId()) {
-//			return 1;
-//		}
-//		return 0;
-//	}
+	// @Override
+	// public int compareTo(Node o) {
+	// if (getId() < o.getId()) {
+	// return -1;
+	// } else if (getId() > o.getId()) {
+	// return 1;
+	// }
+	// return 0;
+	// }
 
 	@Override
-	public int compareTo(Node node){
+	public int compareTo(Node node) {
 		return word.compareTo(node.word);
 	}
+
 	/**
 	 * Gets the left node of the current node.
+	 * 
 	 * @return : left Node
 	 */
 	public Node getLeft() {
@@ -108,7 +109,9 @@ public class Node implements Comparable<Node> {
 
 	/**
 	 * sets the left of the node to a new node
-	 * @param left: new Node
+	 * 
+	 * @param left:
+	 *            new Node
 	 */
 	public void setLeft(Node left) {
 		this.left = left;
@@ -116,6 +119,7 @@ public class Node implements Comparable<Node> {
 
 	/**
 	 * gets the right node of the current node
+	 * 
 	 * @return
 	 */
 	public Node getRight() {
@@ -124,16 +128,29 @@ public class Node implements Comparable<Node> {
 
 	/**
 	 * sets the right of the current node to new node and return it.
-	 * @param right : new Node
+	 * 
+	 * @param right
+	 *            : new Node
 	 * @return: right node
 	 */
 	public Node setRight(Node right) {
 		this.right = right;
 		return right;
 	}
+
 	@Override
-	public String toString(){
-		return "Word is: "+getWord() + " Count is: " +count + " Length is: " +wordLength;
+	public String toString() {
+		return "Word is: " + getWord() + " Count is: " + count + " Length is: " + wordLength;
 	}
+	 int countNode() {
+	        int result = 1;
+	        if (left != null) {
+	        	result += left.countNode();
+	        }
+	        if (right != null) {
+	        	result += right.countNode();
+	        }
+	        return result;
+	    }
 
 }
