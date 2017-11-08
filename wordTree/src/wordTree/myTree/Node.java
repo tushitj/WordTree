@@ -1,5 +1,8 @@
 package wordTree.myTree;
 
+import wordTree.util.MyLogger;
+import wordTree.util.MyLogger.DebugLevel;
+
 /**
  * Node class that is a structure to save in the tree that implements Observer,
  * Subject, Cloneable and Comparable Interface. Class has two pointers to left
@@ -38,6 +41,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public Node(String wordIn) {
+		MyLogger.writeMessage(this.getClass() + "Logger: Constructor called", DebugLevel.CONSTRUCTOR);
 		count = 1;
 		setLeft(null);
 		setRight(null);
@@ -66,9 +70,9 @@ public class Node implements Comparable<Node> {
 	 */
 	public void removeWord(String wordIn) {
 		if (null != wordIn) {
-			//if(count>0){
+			if(count>0){
 			count--;
-			 //}
+			 }
 		}
 	}
 
@@ -144,6 +148,7 @@ public class Node implements Comparable<Node> {
 	}
 	 int countNode() {
 	        int result = 1;
+	        //result = 1;
 	        if (left != null) {
 	        	result += left.countNode();
 	        }

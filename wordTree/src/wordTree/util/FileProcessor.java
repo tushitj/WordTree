@@ -16,6 +16,7 @@ import java.util.List;
  *
  */
 public class FileProcessor {
+    //public int counter=0;
     private String fileName;
     BufferedReader br;
     FileReader fin;
@@ -32,6 +33,10 @@ public class FileProcessor {
             fileName = fileNameIn;
             try{
                 File file = new File(fileName);
+                if(file.length() < 1){
+                    System.err.println("File is empty. Cannot proceed.");
+                    System.exit(1);
+                }
                 if(!file.isDirectory() && file.exists()){
                     fin = new FileReader(file);
                     br = new BufferedReader(fin);
@@ -46,7 +51,7 @@ public class FileProcessor {
             }
         }
         else{
-            System.out.println("Invalid File Name");
+            System.err.println("Invalid File Name");
         }
         //MyLogger.writeMessage("FileProcessor class constructor." , MyLogger.DebugLevel.CONSTRUCTOR);
     }
@@ -73,12 +78,23 @@ public class FileProcessor {
         String line = null;
         try{
             line = br.readLine();
+            // if(line.trim().length()<1){
+            //     return "DEB";
+            // }
             //if(line == null || (line.trim().length()<1)){
-            if(line == null || line.trim().length()<1){
-            		return null;
+                //System.out.println("Line is empty or null here.");
+            if(line == null){
+                //System.out.println("Line is null here.");
+            	return null;
             }
+            else if(line.trim().length() < 1){
+                //System.out.println("Line is empty here.");
+                return "1@xs4#@klmn~za-b+m?";
+            }
+
             else{
-                return line;
+                //counter++;
+                return line.trim();
             }
         }catch(IOException e){
             //MyLogger.writeMessage("Error in FileProcessor class. The file name is either not a file or does not exist." , MyLogger.DebugLevel.IN_RESULTS);
@@ -97,7 +113,13 @@ public class FileProcessor {
         }
         return line;
     }
-
-
-
+   public void closeFiles(){
+       try{
+           br.close();
+       fin.close();
+   }catch(IOException e){
+       System.err.println("Error while closing buffers and file");
+       e.printStackTrace();           
+   }
+   }
 }

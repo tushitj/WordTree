@@ -1,0 +1,3 @@
+Number of Unique words : 27
+Number of words : 33
+Number of Characters : 145

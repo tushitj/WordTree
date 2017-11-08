@@ -1,6 +1,6 @@
 package wordTree.util;
 
 public interface FileDisplayInterface {
-	public void writeSchedulesToFile();
+	public void writeSchedulesToFile(String filename);
 
 }

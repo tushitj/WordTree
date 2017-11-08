@@ -13,7 +13,7 @@ public class CreateWorkers implements Runnable {
 	int num_threads;
 	String[] wordsDel;
 	public CreateWorkers(FileProcessor fpIn, Tree tIn, Results resultIn){
-		MyLogger.writeMessage("Constructor called", DebugLevel.CONSTRUCTOR);
+		MyLogger.writeMessage(this.getClass() + "Logger: Constructor called", DebugLevel.CONSTRUCTOR);
 		this.fp = fpIn;
 		this.tree = tIn;
 		this.result = resultIn;
@@ -59,16 +59,20 @@ public class CreateWorkers implements Runnable {
 
 	@Override
 	public void run() {
-		MyLogger.writeMessage("Thread's run called", DebugLevel.IN_RUN);
+		MyLogger.writeMessage(this.getClass() + "Logger: Thread's run called", DebugLevel.IN_RUN);
 		String str="";
 		if(insert == true){
 			//String str;
 			while((str = fp.readLine())!=null){
-				String[] words = str.split("\\s+");
+				if(!(str.equals("1@xs4#@klmn~za-b+m?"))){
+					//System.out.println(str);
+					String[] words = str.split("\\s+");
 				for(String wordIn : words){
 					//System.out.println(wordIn);
 					tree.insertWord(wordIn);
 					str = null;
+				}
+				
 					
 				}
 			}

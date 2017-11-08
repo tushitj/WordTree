@@ -6,6 +6,7 @@ import wordTree.threadMgmt.CreateWorkers;
 import wordTree.util.FileProcessor;
 import wordTree.util.MyLogger;
 import wordTree.util.OutputCalculation;
+import wordTree.util.MyLogger.DebugLevel;
 
 public class Driver {
 	static boolean insert = true;
@@ -29,15 +30,16 @@ public class Driver {
 		int NUM_THREADS = 0;
 		int argLength = args.length;
 		if (argLength != 5 || !checkArgs(args)) {
+		//if (argLength != 5 ) {
 			System.err.println("Error. Incorrect Arguments");
 			System.exit(1);
 		}
 		String inputFile = args[0];
 		String outputFile = args[1];
-		// String[] deleteWords = args[2].split("\\s+");
-		String[] deleteWords = args[2].split(",");
+		String[] deleteWords = args[3].split("\\s+");
+		//String[] deleteWords = args[2].split(",");
 		deleteCount = deleteWords.length;
-		if (1 < deleteCount && deleteCount > 3) {
+		if (deleteCount < 1 || deleteCount > 3) {
 			System.err.println("Number of delete words cannot be more than 3");
 			System.exit(1);
 		}
@@ -45,31 +47,25 @@ public class Driver {
 		// String deleteWord2 = args[3];
 		// String deleteWord3 = args[4];
 		try {
-			debuglevel = Integer.parseInt(args[3]);
-			NUM_THREADS = Integer.parseInt(args[4]);
+			debuglevel = Integer.parseInt(args[4]);
+			NUM_THREADS = Integer.parseInt(args[2]);
 		} catch (NumberFormatException e) {
 			System.err.println("Number expected at debug level and number of threads.");
 			System.exit(1);
 		}
-		if (1 < NUM_THREADS && NUM_THREADS > 3) {
+		if ((NUM_THREADS < 1) || (NUM_THREADS > 3)) {
 			System.err.println("Number of threads should be between 1 and 3");
-			System.exit(3);
+			System.exit(1);
 		}
-//		if (deleteCount != NUM_THREADS) {
-//			System.err.println("Number of threads not equal to number of words to delete");
-//			System.exit(1);
-//		}
+		if (deleteCount != NUM_THREADS) {
+			System.err.println("Number of threads not equal to number of words to delete");
+			System.exit(1);
+		}
 		MyLogger.setDebugValue(debuglevel);
 		Tree tree = new Tree();
 		FileProcessor input = new FileProcessor(inputFile);
 		input.setArr(deleteWords);
-		// FileProcessor output = new FileProcessor(outputFile);
 		Results results = new Results();
-		
-//		doMethod(input,tree,deleteWords);
-//		insert = false;
-//		doMethod(input,tree,deleteWords);
-//		tree.print();
 		CreateWorkers cw = new CreateWorkers(input, tree, results);
 		try {
 			cw.startPopulateWorkers(NUM_THREADS);
@@ -80,37 +76,30 @@ public class Driver {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		MyLogger my = new MyLogger();
 		MyLogger.setDebugValue(debuglevel);
-		OutputCalculation oc = new OutputCalculation(tree);
-		System.out.println("Number of Unique words : "+ oc.getUniqueWords());
-		System.out.println("Number of words : "+ oc.getWordCount());
-		System.out.println("Number of Characters : "+ oc.totalChars());
+		String level = my.toString();
+		System.out.println(level);
+		OutputCalculation oc = new OutputCalculation(tree);	
+		MyLogger.writeMessage("Logger: Printing the result in the standard output and in output file", DebugLevel.IN_RESULTS);
+		String uniqueWord = String.format("Number of Unique words : %d", oc.getUniqueWords());
+		String wordCount = String.format("Number of words : %d", oc.getWordCount());
+		String totalChar = String.format("Number of Characters : %d", oc.totalChars());
+		results.storeNewResult(uniqueWord);
+		results.storeNewResult(wordCount);
+		results.storeNewResult(totalChar);
+		results.writeSchedulesToFile(outputFile);
+		if(debuglevel == 0)
+		{
+			
+		}
+		else
+		{
+			results.writeToScreen();
+			MyLogger.writeMessage("Logger: Coming out of the result after printing the results", DebugLevel.FROM_RESULTS);
+		}
 
 	}
-//	public static void doMethod(FileProcessor fp, Tree tree, String[] wordsDel) {
-//		
-//		if(insert == true){
-//			String str;
-//			while((str = fp.readLine())!=null){
-//				String[] words = str.split("\\s+");
-//				for(String wordIn : words){
-//					//System.out.println(wordIn);
-//					tree.insertWord(wordIn);
-//					
-//				}
-//			}
-//			
-//			//read from file
-//			//enter values in the tree.
-//		}
-//		else if (insert == false){
-//			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//			for(String word : wordsDel) {
-//				tree.removeWordCountFromNode(word);
-//			}
-//		
-//		
-//	}
-//
-//}
+	
+	
 }
