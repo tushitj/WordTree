@@ -41,7 +41,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public Node(String wordIn) {
-		MyLogger.writeMessage(this.getClass() + "Logger: Constructor called", DebugLevel.CONSTRUCTOR);
+		MyLogger.writeMessage(this.getClass() + "Logger: Constructor called",  MyLogger.DebugLevel.CONSTRUCTOR);
 		count = 1;
 		setLeft(null);
 		setRight(null);

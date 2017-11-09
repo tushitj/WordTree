@@ -24,13 +24,20 @@ public class Driver {
 		return toCheck == toEqual;
 	}
 
+/**
+ * Main function for starting the code
+ * and command line argument will be input file,
+ * output file, number of threads, delete words,
+ * debug level
+ * 
+ */
 	public static void main(String[] args) {
 		int deleteCount = 0;
 		int debuglevel = 0;
 		int NUM_THREADS = 0;
 		int argLength = args.length;
 		if (argLength != 5 || !checkArgs(args)) {
-		//if (argLength != 5 ) {
+			MyLogger.writeMessage("Logger: Error in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Error. Incorrect Arguments");
 			System.exit(1);
 		}
@@ -40,6 +47,7 @@ public class Driver {
 		//String[] deleteWords = args[2].split(",");
 		deleteCount = deleteWords.length;
 		if (deleteCount < 1 || deleteCount > 3) {
+			MyLogger.writeMessage("Logger: Error in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Number of delete words cannot be more than 3");
 			System.exit(1);
 		}
@@ -50,14 +58,17 @@ public class Driver {
 			debuglevel = Integer.parseInt(args[4]);
 			NUM_THREADS = Integer.parseInt(args[2]);
 		} catch (NumberFormatException e) {
+			MyLogger.writeMessage("Logger: Exception in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Number expected at debug level and number of threads.");
 			System.exit(1);
 		}
 		if ((NUM_THREADS < 1) || (NUM_THREADS > 3)) {
+			MyLogger.writeMessage("Logger: Error in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Number of threads should be between 1 and 3");
 			System.exit(1);
 		}
 		if (deleteCount != NUM_THREADS) {
+			MyLogger.writeMessage("Logger: Error in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Number of threads not equal to number of words to delete");
 			System.exit(1);
 		}
@@ -72,6 +83,7 @@ public class Driver {
 			cw.setInsert(false);
 			cw.startDeleteWorkers(deleteWords);
 		} catch (InterruptedException e) {
+			MyLogger.writeMessage("Logger: Exception in Main", DebugLevel.IN_RESULTS);
 			System.err.println("Some error with threads.");
 			e.printStackTrace();
 			System.exit(1);
@@ -79,9 +91,8 @@ public class Driver {
 		MyLogger my = new MyLogger();
 		MyLogger.setDebugValue(debuglevel);
 		String level = my.toString();
-		System.out.println(level);
-		OutputCalculation oc = new OutputCalculation(tree);	
-		MyLogger.writeMessage("Logger: Printing the result in the standard output and in output file", DebugLevel.IN_RESULTS);
+		OutputCalculation oc = new OutputCalculation(tree);
+		System.out.println(level);	
 		String uniqueWord = String.format("Number of Unique words : %d", oc.getUniqueWords());
 		String wordCount = String.format("Number of words : %d", oc.getWordCount());
 		String totalChar = String.format("Number of Characters : %d", oc.totalChars());
@@ -94,9 +105,9 @@ public class Driver {
 			
 		}
 		else
-		{
+		{	MyLogger.writeMessage("Logger: Only the output", DebugLevel.FROM_RESULTS);
 			results.writeToScreen();
-			MyLogger.writeMessage("Logger: Coming out of the result after printing the results", DebugLevel.FROM_RESULTS);
+			
 		}
 
 	}

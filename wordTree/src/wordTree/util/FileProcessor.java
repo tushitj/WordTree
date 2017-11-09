@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import wordTree.util.MyLogger;
+import wordTree.util.MyLogger.DebugLevel;
 
 /**
  * FileProcessor Class that is used to process the input and output files.
@@ -29,6 +31,7 @@ public class FileProcessor {
      * @param fileNameIn : input filename from Driver.Main
      */
     public FileProcessor(String fileNameIn) {
+        MyLogger.writeMessage(this.getClass() + "Logger: Constructor called", MyLogger.DebugLevel.CONSTRUCTOR);
         if(fileNameIn != null && (fileNameIn.trim().length() > 0)){
             fileName = fileNameIn;
             try{
@@ -46,6 +49,7 @@ public class FileProcessor {
                     throw new FileNotFoundException();
                 }
             }catch(FileNotFoundException e){
+                MyLogger.writeMessage("Logger: Exception in FileProcessor", DebugLevel.IN_RESULTS);
                 e.printStackTrace();
                 System.exit(0);
             }
@@ -58,7 +62,6 @@ public class FileProcessor {
 
     /**
      * Function reads each line from the file and returns it to the calling function
-     * @return 
      * @return string value from the file
      */
     public void setArr(String[] arrIn) {
@@ -74,6 +77,10 @@ public class FileProcessor {
 		   return null;
 	   }
    }
+
+   /**
+    * Method reads the line from the file
+    */
    synchronized public String readLine(){
         String line = null;
         try{
@@ -97,7 +104,7 @@ public class FileProcessor {
                 return line.trim();
             }
         }catch(IOException e){
-            //MyLogger.writeMessage("Error in FileProcessor class. The file name is either not a file or does not exist." , MyLogger.DebugLevel.IN_RESULTS);
+            MyLogger.writeMessage("Error in FileProcessor class. The file name is either not a file or does not exist." , MyLogger.DebugLevel.IN_RESULTS);
             e.printStackTrace();
         }
         finally{
@@ -118,6 +125,7 @@ public class FileProcessor {
            br.close();
        fin.close();
    }catch(IOException e){
+    MyLogger.writeMessage("Logger: Exception in FileProcessor", DebugLevel.IN_RESULTS);
        System.err.println("Error while closing buffers and file");
        e.printStackTrace();           
    }

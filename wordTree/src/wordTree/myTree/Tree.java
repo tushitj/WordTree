@@ -1,5 +1,7 @@
 package wordTree.myTree;
 
+import wordTree.util.MyLogger;
+import wordTree.util.MyLogger.DebugLevel;
 
 public class Tree {
 	private volatile Node root;
@@ -13,6 +15,7 @@ public class Tree {
 	}
 
 	public Tree() {
+		MyLogger.writeMessage(this.getClass() + "Logger: Constructor called",  MyLogger.DebugLevel.CONSTRUCTOR);
 		root = null;
 	}
 
@@ -33,6 +36,13 @@ public class Tree {
 
 	}
 
+/**
+ * This method would insert the words in a distinct node
+ * of the BST tree by following the BST properties
+ * @param curr
+ * @param node
+ * @return curr
+ */
  private Node insert(Node curr, Node node) {
 		if (curr == null) {
 			curr = node;
@@ -54,6 +64,13 @@ public class Tree {
 		return node;
 	}
 
+/**
+ * This method search the word in the BST nodes
+ * by following the BST properties
+ * @param node
+ * @param m
+ * @return found
+ */
 	synchronized private Node searchRec(Node node, String m) {
 		Node found = null;
 		if (node == null || node.getWord().compareTo(m) == 0) {
@@ -80,6 +97,12 @@ public class Tree {
 //		}
 //	}
 
+/**
+ * This method will remove the word from the node
+ * of the BST after searching the node from the BST
+ * @param word
+ * @return String "Removed"
+ */
 	synchronized public String removeWordCountFromNode(String word) {
 		Node node = searchNode(word);
 		if (node == null) {

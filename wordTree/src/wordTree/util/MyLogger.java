@@ -5,8 +5,8 @@ public class MyLogger{
 
     /*DEBUG_VALUE=4 [Print to stdout everytime a constructor is called]
       DEBUG_VALUE=3 [Print to stdout everytime a thread's run() method is called]
-      DEBUG_VALUE=2 [Print to stdout when printing the result in standard output and in the output File ]
-      DEBUG_VALUE=1 [Print to stdout after result is printed to the stdout or after coming out of result: swriteToScreen(...)]
+      DEBUG_VALUE=2 [Print to stdout when an exception occurs]
+      DEBUG_VALUE=1 [Print to stdout the final result]
       DEBUG_VALUE=0 [No output should be printed from the application to stdout. However, it doesn't affect what's get written to the output file" ]
     */
 	////////
@@ -16,6 +16,10 @@ public class MyLogger{
 
     private static DebugLevel debugLevel;
 
+/**
+ * This method sets the debug value 
+ * @param levelIn
+ */
     public static void setDebugValue (int levelIn) {
 	switch (levelIn) {
 	  case 4: debugLevel = DebugLevel.CONSTRUCTOR;
